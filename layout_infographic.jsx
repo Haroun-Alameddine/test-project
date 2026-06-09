@@ -18,7 +18,7 @@
 // HELPERS
 // ──────────────────────────────────────────────────────────────
 
-var doc, NONE, BLACK, WHITE;
+var doc, BLACK, WHITE;
 
 function mm(v) { return v; }   // units are already mm after setup
 
@@ -42,8 +42,8 @@ function addColor(name, c, m, y, k) {
 function R(page, ob, t, l, b, r, fill, stroke, sw) {
     var rect = page.rectangles.add();
     rect.geometricBounds = [ob[0]+t, ob[1]+l, ob[0]+b, ob[1]+r];
-    rect.fillColor   = fill   || NONE;
-    rect.strokeColor = stroke || NONE;
+    rect.fillColor   = fill   || "None";
+    rect.strokeColor = stroke || "None";
     if (sw !== undefined) rect.strokeWeight = sw;
     return rect;
 }
@@ -52,8 +52,8 @@ function R(page, ob, t, l, b, r, fill, stroke, sw) {
 function O(page, ob, t, l, b, r, fill, stroke, sw) {
     var ov = page.ovals.add();
     ov.geometricBounds = [ob[0]+t, ob[1]+l, ob[0]+b, ob[1]+r];
-    ov.fillColor   = fill   || NONE;
-    ov.strokeColor = stroke || NONE;
+    ov.fillColor   = fill   || "None";
+    ov.strokeColor = stroke || "None";
     if (sw !== undefined) ov.strokeWeight = sw;
     return ov;
 }
@@ -62,8 +62,8 @@ function O(page, ob, t, l, b, r, fill, stroke, sw) {
 function T(page, ob, t, l, b, r, content, size, bold, color, align) {
     var tf = page.textFrames.add();
     tf.geometricBounds = [ob[0]+t, ob[1]+l, ob[0]+b, ob[1]+r];
-    tf.fillColor   = NONE;
-    tf.strokeColor = NONE;
+    tf.fillColor   = "None";
+    tf.strokeColor = "None";
     if (content !== null) tf.contents = content;
 
     var txt = tf.texts[0];
@@ -130,7 +130,6 @@ with (doc.marginPreferences) {
 // COLOURS
 // ──────────────────────────────────────────────────────────────
 
-NONE  = doc.swatches.item("None");
 BLACK = doc.colors.item("Black");
 WHITE = doc.colors.item("White");
 
@@ -183,10 +182,10 @@ var o4 = p4.bounds;
 // ====== PAGE 1 — LEFT (366) ======
 
 R(p1, o1, 0, 0, PH, PW, ltGreen);                          // bg
-R(p1, o1, 4, 4, PH-4, PW-4, NONE, yellow, 3.5);            // border
+R(p1, o1, 4, 4, PH-4, PW-4, "None", yellow, 3.5);            // border
 
 // Chapter header bar
-RR(p1, o1, 7, 7, 46, PW-7, green, NONE, 0, 6);
+RR(p1, o1, 7, 7, 46, PW-7, green, "None", 0, 6);
 
 // "7" badge
 O(p1, o1, 9, 9, 35, 35, WHITE);
@@ -216,7 +215,7 @@ T(p1, o1, 162, 8, 171, PW-8, "児童労働をしている子ども",
 IMG(p1, o1, 172, 8, 206, PW-8, "[ インフォグラフィック: 子どもの人数アイコン ]");
 
 // Red stat callout
-RR(p1, o1, 208, 8, 226, PW-8, red, NONE, 0, 5);
+RR(p1, o1, 208, 8, 226, PW-8, red, "None", 0, 5);
 T(p1, o1, 210, 12, 224, PW-12,
   "約1人\n（世界の子どもの10人に1人の割合）",
   11, true, WHITE, Justification.CENTER_ALIGN);
@@ -227,7 +226,7 @@ T(p1, o1, PH-9, 8, PH-1, 26, "366", 8, false, BLACK);
 // ====== PAGE 2 — RIGHT (367) ======
 
 R(p2, o2, 0, 0, PH, PW, WHITE);
-R(p2, o2, 4, 4, PH-4, PW-4, NONE, yellow, 3.5);
+R(p2, o2, 4, 4, PH-4, PW-4, "None", yellow, 3.5);
 
 T(p2, o2, 7, 8, 19, PW-8,
   "「子どもらしさ」を奪う児童労働", 13, true, BLACK);
@@ -269,10 +268,10 @@ T(p2, o2, PH-9, PW-26, PH-1, PW-8, "367",
 // ====== PAGE 3 — LEFT (378) ======
 
 R(p3, o3, 0, 0, PH, PW, ltPurple);
-R(p3, o3, 4, 4, PH-4, PW-4, NONE, yellow, 3.5);
+R(p3, o3, 4, 4, PH-4, PW-4, "None", yellow, 3.5);
 
 // Chapter header bar
-RR(p3, o3, 7, 7, 55, PW-7, green, NONE, 0, 6);
+RR(p3, o3, 7, 7, 55, PW-7, green, "None", 0, 6);
 
 // "9" badge
 O(p3, o3, 9, 9, 35, 35, WHITE);
@@ -298,12 +297,12 @@ T(p3, o3, 85, 8, 94, PW-8, "年収格差の男女差", 11, true, BLACK);
 T(p3, o3, 96, 8, 105, 40, "世界", 12, true, blue);
 
 // Male box — world
-R(p3, o3, 106, 8, 132, PW/2-5, NONE, blue, 1.5);
+R(p3, o3, 106, 8, 132, PW/2-5, "None", blue, 1.5);
 T(p3, o3, 113, 10, 128, PW/2-7, "23,300ドル",
   13, true, blue, Justification.CENTER_ALIGN);
 
 // Female box — world
-R(p3, o3, 106, PW/2+5, 132, PW-8, NONE, red, 1.5);
+R(p3, o3, 106, PW/2+5, 132, PW-8, "None", red, 1.5);
 T(p3, o3, 113, PW/2+7, 128, PW-10, "13,100ドル",
   13, true, red, Justification.CENTER_ALIGN);
 
@@ -311,7 +310,7 @@ T(p3, o3, 113, PW/2+7, 128, PW-10, "13,100ドル",
 IMG(p3, o3, 133, 8, 157, PW-8, "[ アイコン: 世界の男女労働者 ]");
 
 // Callout — world
-RR(p3, o3, 158, PW/2, 170, PW-10, orange, NONE, 0, 8);
+RR(p3, o3, 158, PW/2, 170, PW-10, orange, "None", 0, 8);
 T(p3, o3, 160, PW/2+3, 169, PW-13, "女性は男性の約56%！",
   9, true, WHITE, Justification.CENTER_ALIGN);
 
@@ -319,22 +318,22 @@ T(p3, o3, 160, PW/2+3, 169, PW-13, "女性は男性の約56%！",
 T(p3, o3, 172, 8, 181, 40, "日本", 12, true, blue);
 
 // Male box — Japan
-R(p3, o3, 182, 8, 208, PW/2-5, NONE, blue, 1.5);
+R(p3, o3, 182, 8, 208, PW/2-5, "None", blue, 1.5);
 T(p3, o3, 189, 10, 205, PW/2-7, "51,730円",
   13, true, blue, Justification.CENTER_ALIGN);
 
 // Female box — Japan
-R(p3, o3, 182, PW/2+5, 208, PW-8, NONE, red, 1.5);
+R(p3, o3, 182, PW/2+5, 208, PW-8, "None", red, 1.5);
 T(p3, o3, 189, PW/2+7, 205, PW-10, "29,260円",
   13, true, red, Justification.CENTER_ALIGN);
 
 // Callout — Japan
-RR(p3, o3, 209, PW/2, 221, PW-10, orange, NONE, 0, 8);
+RR(p3, o3, 209, PW/2, 221, PW-10, orange, "None", 0, 8);
 T(p3, o3, 211, PW/2+3, 220, PW-13, "女性は男性の約57%！",
   9, true, WHITE, Justification.CENTER_ALIGN);
 
 // Bottom question box
-RR(p3, o3, 223, 8, PH-8, PW-8, purple, NONE, 0, 4);
+RR(p3, o3, 223, 8, PH-8, PW-8, purple, "None", 0, 4);
 var qTF = T(p3, o3, 225, 12, PH-10, PW-12, "", 9, false, BLACK);
 qTF.label = "PLACE WORD TEXT HERE — discussion question";
 
@@ -344,7 +343,7 @@ T(p3, o3, PH-9, 8, PH-1, 26, "378", 8, false, BLACK);
 // ====== PAGE 4 — RIGHT (379) ======
 
 R(p4, o4, 0, 0, PH, PW, ltPurple);
-R(p4, o4, 4, 4, PH-4, PW-4, NONE, yellow, 3.5);
+R(p4, o4, 4, 4, PH-4, PW-4, "None", yellow, 3.5);
 
 // "6" badge (right column indicator)
 O(p4, o4, 7, PW-32, 45, PW-5, green);
@@ -375,7 +374,7 @@ var explTF = T(p4, o4, 114, 8, 140, PW-8, "", 9, false, BLACK);
 explTF.label = "PLACE WORD TEXT HERE — explanation text";
 
 // Gender Gap Index box
-RR(p4, o4, 142, 8, 185, PW-8, purple, NONE, 0, 4);
+RR(p4, o4, 142, 8, 185, PW-8, purple, "None", 0, 4);
 T(p4, o4, 144, 12, 154, PW-12, "ジェンダーギャップ指数について",
   10, true, BLACK);
 var sdgTF = T(p4, o4, 155, 12, 183, PW-12, "", 9, false, BLACK);
