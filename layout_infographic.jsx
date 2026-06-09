@@ -155,8 +155,10 @@ var p3  = s2.pages[0];   // left  378
 var p4  = s2.pages[1];   // right 379
 
 // Section numbering
+doc.sections.item(0).continueNumbering = false;
 doc.sections.item(0).pageNumberStart = 366;
 var sec2 = doc.sections.add(p3);
+sec2.continueNumbering = false;
 sec2.pageNumberStart = 378;
 
 // Page-origin bounds (spread coordinate offsets)
