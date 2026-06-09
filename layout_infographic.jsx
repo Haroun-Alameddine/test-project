@@ -83,10 +83,19 @@ function IMG(page, ob, t, l, b, r, label) {
     return bx;
 }
 
-/** Rounded-corner rectangle (approximated via cornerRadius) */
+/** Rounded-corner rectangle */
 function RR(page, ob, t, l, b, r, fill, stroke, sw, radius) {
     var rect = R(page, ob, t, l, b, r, fill, stroke, sw);
-    if (radius) rect.cornerRadius = radius;
+    if (radius) {
+        rect.topLeftCornerOption     = CornerOptions.ROUNDED_CORNER;
+        rect.topRightCornerOption    = CornerOptions.ROUNDED_CORNER;
+        rect.bottomLeftCornerOption  = CornerOptions.ROUNDED_CORNER;
+        rect.bottomRightCornerOption = CornerOptions.ROUNDED_CORNER;
+        rect.topLeftCornerRadius     = radius;
+        rect.topRightCornerRadius    = radius;
+        rect.bottomLeftCornerRadius  = radius;
+        rect.bottomRightCornerRadius = radius;
+    }
     return rect;
 }
 
