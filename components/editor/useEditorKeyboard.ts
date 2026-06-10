@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import { useAppStore } from '@/lib/store';
+import { useProjectStore } from '@/store/projectStore';
 import { generateId } from '@/lib/utils';
 
 export function useEditorKeyboard(currentPageId: string | null) {
@@ -50,18 +51,7 @@ export function useEditorKeyboard(currentPageId: string | null) {
       if (ctrl && e.key === 's') {
         e.preventDefault();
         if (currentProject) {
-          try {
-            const projects = JSON.parse(localStorage.getItem('pedabook_projects') || '[]');
-            const idx = projects.findIndex((p: { id: string }) => p.id === currentProject.id);
-            if (idx >= 0) {
-              projects[idx] = currentProject;
-            } else {
-              projects.push(currentProject);
-            }
-            localStorage.setItem('pedabook_projects', JSON.stringify(projects));
-          } catch {
-            // ignore storage errors
-          }
+          useProjectStore.getState().updateProject(currentProject.id, currentProject);
         }
         return;
       }

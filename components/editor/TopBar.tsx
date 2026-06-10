@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useAppStore } from '@/lib/store';
+import { useProjectStore } from '@/store/projectStore';
 import type { Project } from '@/types';
 import { cn } from '@/lib/utils';
 import Modal from '@/components/ui/Modal';
@@ -89,21 +90,9 @@ export default function TopBar({ project }: TopBarProps) {
 
   const handleSave = () => {
     if (!currentProject) return;
-    try {
-      const stored = localStorage.getItem('pedabook_projects');
-      const projects = stored ? JSON.parse(stored) : [];
-      const idx = projects.findIndex((p: { id: string }) => p.id === currentProject.id);
-      if (idx >= 0) {
-        projects[idx] = currentProject;
-      } else {
-        projects.push(currentProject);
-      }
-      localStorage.setItem('pedabook_projects', JSON.stringify(projects));
-      setIsSaved(true);
-      setTimeout(() => setIsSaved(false), 2000);
-    } catch {
-      // ignore
-    }
+    useProjectStore.getState().updateProject(currentProject.id, currentProject);
+    setIsSaved(true);
+    setTimeout(() => setIsSaved(false), 2000);
   };
 
   const handleExportJSON = () => {

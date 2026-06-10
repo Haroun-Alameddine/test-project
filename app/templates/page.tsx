@@ -16,7 +16,7 @@ import {
 import Button from '@/components/ui/Button';
 import { useProjectStore } from '@/store/projectStore';
 import { allTemplates, createProjectFromTemplate } from '@/lib/templates';
-import { bookTypeLabels, cn } from '@/lib/utils';
+import { bookTypeLabels, cn, generateId } from '@/lib/utils';
 import type { BookType, Template } from '@/types';
 
 // ─── Mock additional templates ────────────────────────────────────────────────
@@ -451,7 +451,6 @@ export default function TemplatesPage() {
   function handleUseTemplate(template: DisplayTemplate) {
     if ('isMock' in template && template.isMock) {
       // For mock templates, create a blank project with the template's style
-      const { v4: uuidv4 } = require('uuid');
       const project = {
         name: template.name,
         bookType: template.bookType,

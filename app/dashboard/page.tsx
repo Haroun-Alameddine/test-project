@@ -149,9 +149,9 @@ export default function DashboardPage() {
     setIsDragOver(false);
     const file = e.dataTransfer.files[0];
     if (file && (file.name.endsWith('.docx') || file.name.endsWith('.doc'))) {
-      alert(`سيتم استيراد الملف: ${file.name}\n(الاستيراد سيكون متاحاً قريباً)`);
+      router.push('/import');
     }
-  }, []);
+  }, [router]);
 
   // Stats
   const totalPages = projects.reduce((acc, p) => acc + p.pages.length, 0);
@@ -430,7 +430,10 @@ export default function DashboardPage() {
               <Sparkles size={18} className="text-[#C9A227]" />
               <h2 className="text-lg font-bold text-[#1B3A6B] font-cairo">قوالب جاهزة</h2>
             </div>
-            <button className="text-sm text-[#1B3A6B] hover:underline font-cairo font-semibold">
+            <button
+              onClick={() => router.push('/templates')}
+              className="text-sm text-[#1B3A6B] hover:underline font-cairo font-semibold"
+            >
               عرض الكل
             </button>
           </div>
@@ -462,7 +465,7 @@ export default function DashboardPage() {
                   <p className="text-xs font-bold text-[#1B3A6B] font-cairo truncate">{tpl.name}</p>
                   <p className="text-xs text-gray-400 font-cairo mt-0.5 truncate">{tpl.desc}</p>
                   <button
-                    onClick={() => setWizardOpen(true)}
+                    onClick={() => router.push('/templates')}
                     className="mt-2 w-full py-1.5 text-xs font-cairo font-semibold text-[#1B3A6B] bg-[#1B3A6B]/8 hover:bg-[#1B3A6B] hover:text-white rounded-lg transition-colors"
                   >
                     استخدم القالب
@@ -529,8 +532,8 @@ export default function DashboardPage() {
                 onChange={(e) => {
                   const file = e.target.files?.[0];
                   if (file) {
-                    alert(`سيتم استيراد الملف: ${file.name}\n(الاستيراد سيكون متاحاً قريباً)`);
                     e.target.value = '';
+                    router.push('/import');
                   }
                 }}
               />

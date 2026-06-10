@@ -8,6 +8,7 @@ import CanvasArea from './CanvasArea';
 import RightSidebar from './RightSidebar';
 import { useEditorKeyboard } from './useEditorKeyboard';
 import { useAppStore } from '@/lib/store';
+import { useProjectStore } from '@/store/projectStore';
 import { cn } from '@/lib/utils';
 
 interface EditorLayoutProps {
@@ -29,22 +30,10 @@ export default function EditorLayout({ project }: EditorLayoutProps) {
   const saveToStorage = useCallback(() => {
     const proj = useAppStore.getState().currentProject;
     if (!proj) return;
-    try {
-      const stored = localStorage.getItem('pedabook_projects');
-      const projects = stored ? JSON.parse(stored) : [];
-      const idx = projects.findIndex((p: { id: string }) => p.id === proj.id);
-      if (idx >= 0) {
-        projects[idx] = proj;
-      } else {
-        projects.push(proj);
-      }
-      localStorage.setItem('pedabook_projects', JSON.stringify(projects));
-      setLastSavedAt(new Date());
-      setShowSavedBadge(true);
-      setTimeout(() => setShowSavedBadge(false), 2000);
-    } catch {
-      // ignore storage errors
-    }
+    useProjectStore.getState().updateProject(proj.id, proj);
+    setLastSavedAt(new Date());
+    setShowSavedBadge(true);
+    setTimeout(() => setShowSavedBadge(false), 2000);
   }, []);
 
   // Auto-save every 30 seconds
