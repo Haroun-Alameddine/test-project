@@ -95,8 +95,8 @@ const MOCK_TEMPLATES = [
 const NAV_ITEMS = [
   { href: '/dashboard', label: 'لوحة التحكم', icon: <LayoutGrid size={16} /> },
   { href: '/dashboard', label: 'مشاريعي', icon: <BookOpen size={16} /> },
-  { href: '/dashboard', label: 'القوالب', icon: <BookMarked size={16} /> },
-  { href: '/dashboard', label: 'المستورد', icon: <Upload size={16} /> },
+  { href: '/templates', label: 'القوالب', icon: <BookMarked size={16} /> },
+  { href: '/import', label: 'استيراد Word', icon: <Upload size={16} /> },
 ];
 
 // ─── Dashboard Page ───────────────────────────────────────────────────────────
@@ -181,7 +181,7 @@ export default function DashboardPage() {
               {NAV_ITEMS.map((item, i) => (
                 <button
                   key={i}
-                  onClick={() => setActiveNav(i)}
+                  onClick={() => { setActiveNav(i); router.push(item.href); }}
                   className={cn(
                     'flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-cairo font-medium transition-colors',
                     activeNav === i

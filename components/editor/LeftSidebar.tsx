@@ -22,6 +22,7 @@ import {
 import { useAppStore, generateId } from '@/lib/store';
 import type { Project, ProjectPage, CanvasObject, PageTemplateType } from '@/types';
 import { cn } from '@/lib/utils';
+import { arabicGrade2Template } from '@/lib/templates/definitions';
 import PageThumbnail from './PageThumbnail';
 
 interface LeftSidebarProps {
@@ -249,9 +250,51 @@ export default function LeftSidebar({ project, currentPageIndex, onPageSelect }:
 
   // ─── Templates panel ─────────────────────────────────────────────────────────
 
-  const handleApplyTemplate = (templateType: PageTemplateType, bg: string) => {
+  /**
+   * Apply a template type to the current page.
+   * If the page already has objects, ask for confirmation before replacing them
+   * with the pre-built objects from the Grade 2 Arabic template (or first
+   * available template that contains a matching page type).
+   */
+  const applyPageTemplate = (templateType: PageTemplateType, bg: string) => {
     if (!currentPage) return;
-    updatePage(currentPage.id, { templateType, background: bg });
+
+    // Find matching page definition from Grade 2 template (fallback: just set type)
+    const templatePage = arabicGrade2Template.pages.find(
+      (p) => p.templateType === templateType,
+    );
+
+    const doApply = () => {
+      if (templatePage && templatePage.objects.length > 0) {
+        // Clone objects with fresh IDs
+        const freshObjects: CanvasObject[] = templatePage.objects.map((obj) => ({
+          ...obj,
+          id: generateId(),
+        }));
+        useAppStore.getState().updatePage(currentPage.id, {
+          templateType,
+          background: bg,
+          objects: freshObjects,
+        });
+      } else {
+        // No pre-built objects available — just update type/background
+        updatePage(currentPage.id, { templateType, background: bg });
+      }
+    };
+
+    const hasObjects = currentPage.objects.length > 0;
+    if (hasObjects) {
+      const confirmed = window.confirm(
+        'هذه الصفحة تحتوي على عناصر. هل تريد استبدالها بعناصر القالب الجديد؟',
+      );
+      if (confirmed) doApply();
+    } else {
+      doApply();
+    }
+  };
+
+  const handleApplyTemplate = (templateType: PageTemplateType, bg: string) => {
+    applyPageTemplate(templateType, bg);
   };
 
   // ─── Elements panel ──────────────────────────────────────────────────────────

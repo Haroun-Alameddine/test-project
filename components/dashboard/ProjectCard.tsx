@@ -14,6 +14,7 @@ import {
   Calendar,
   NotebookPen,
   LibraryBig,
+  Settings,
 } from 'lucide-react';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { cn, formatDate, bookTypeLabels } from '@/lib/utils';
@@ -188,6 +189,13 @@ export default function ProjectCard({ project, onDelete, onDuplicate, onRename }
                 >
                   <Copy size={14} />
                   تكرار المشروع
+                </DropdownMenu.Item>
+                <DropdownMenu.Item
+                  className="flex items-center gap-2.5 px-3 py-2 text-sm font-cairo text-gray-700 hover:bg-[#f0f4fc] hover:text-[#1B3A6B] cursor-pointer transition-colors focus:outline-none focus:bg-[#f0f4fc]"
+                  onSelect={() => router.push(`/settings/${project.id}`)}
+                >
+                  <Settings size={14} />
+                  إعدادات المشروع
                 </DropdownMenu.Item>
                 <DropdownMenu.Separator className="my-1 h-px bg-gray-100" />
                 <DropdownMenu.Item

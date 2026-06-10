@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useAppStore } from '@/lib/store';
+import { useProjectStore } from '@/store/projectStore';
 import EditorLayout from '@/components/editor/EditorLayout';
 import type { Project } from '@/types';
 
@@ -12,6 +13,7 @@ export default function EditorPage() {
   const id = params?.id as string;
 
   const { currentProject, setCurrentProject, projects } = useAppStore();
+  const projectStoreProjects = useProjectStore((s) => s.projects);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
 
@@ -22,25 +24,34 @@ export default function EditorPage() {
       return;
     }
 
-    // 1. Check if already loaded in store
+    // 1. Already loaded
     if (currentProject?.id === id) {
       setLoading(false);
       return;
     }
 
-    // 2. Check projects list in store
-    const fromStore = projects.find((p) => p.id === id);
-    if (fromStore) {
-      setCurrentProject(fromStore);
+    // 2. Check useAppStore projects list
+    const fromAppStore = projects.find((p) => p.id === id);
+    if (fromAppStore) {
+      setCurrentProject(fromAppStore);
       setLoading(false);
       return;
     }
 
-    // 3. Fallback: check localStorage
+    // 3. Check useProjectStore (used by dashboard + analysis)
+    const fromProjectStore = projectStoreProjects.find((p) => p.id === id);
+    if (fromProjectStore) {
+      setCurrentProject(fromProjectStore);
+      setLoading(false);
+      return;
+    }
+
+    // 4. Fallback: check localStorage directly
     try {
-      const stored = localStorage.getItem('pedabook_projects');
+      const stored = localStorage.getItem('pedabook-projects');
       if (stored) {
-        const list: Project[] = JSON.parse(stored);
+        const parsed = JSON.parse(stored) as { state?: { projects?: Project[] } };
+        const list = parsed?.state?.projects ?? [];
         const found = list.find((p) => p.id === id);
         if (found) {
           setCurrentProject(found);
@@ -49,12 +60,12 @@ export default function EditorPage() {
         }
       }
     } catch {
-      // ignore parse errors
+      // ignore
     }
 
     setNotFound(true);
     setLoading(false);
-  }, [id, currentProject, projects, setCurrentProject]);
+  }, [id, currentProject, projects, projectStoreProjects, setCurrentProject]);
 
   if (loading) {
     return (
