@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import { useProjectStore } from '@/store/projectStore';
+import { useRequireAuth } from '@/hooks/useRequireAuth';
 import { bookTypeLabels, arabicFonts, pageSizes, cn } from '@/lib/utils';
 import type { BookType, PageOrientation, Project } from '@/types';
 
@@ -294,6 +295,7 @@ export default function SettingsPage() {
   const router = useRouter();
   const id = params?.id as string;
 
+  const { loading: authLoading } = useRequireAuth();
   const { getProject, updateProject, deleteProject } = useProjectStore();
 
   // ── Local form state ──────────────────────────────────────────
@@ -442,7 +444,7 @@ export default function SettingsPage() {
   }
 
   // ── Render guards ─────────────────────────────────────────────
-  if (loading) {
+  if (authLoading || loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#f4f6fb]">
         <div className="text-center">

@@ -4,6 +4,7 @@ import React, { useState, useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { useRouter } from 'next/navigation'
 import { parseDocxFile } from '@/lib/docx/parser'
+import { useRequireAuth } from '@/hooks/useRequireAuth'
 import type { RawDocxContent } from '@/lib/docx/parser'
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -18,6 +19,7 @@ function formatBytes(bytes: number): string {
 
 export default function ImportPage() {
   const router = useRouter()
+  const { loading: authLoading } = useRequireAuth()
 
   const [file, setFile] = useState<File | null>(null)
   const [rawContent, setRawContent] = useState<RawDocxContent | null>(null)
@@ -143,6 +145,8 @@ export default function ImportPage() {
   const canAnalyze = hasContent && !analyzing
 
   // ─── Render ─────────────────────────────────────────────────────────────────
+
+  if (authLoading) return null;
 
   return (
     <div className="min-h-screen bg-[var(--color-bg)] flex flex-col" dir="rtl">

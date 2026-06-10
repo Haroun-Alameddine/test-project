@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { BookOpen, Eye, EyeOff, Mail, Lock, User } from 'lucide-react';
@@ -34,6 +34,12 @@ export default function RegisterPage() {
     else if (confirmPassword !== password) errs.confirmPassword = 'كلمتا المرور غير متطابقتين';
     return errs;
   }
+
+  useEffect(() => {
+    if (localStorage.getItem('pedabook_user')) {
+      router.replace('/dashboard');
+    }
+  }, [router]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();

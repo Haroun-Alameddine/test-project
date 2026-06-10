@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useAppStore } from '@/lib/store';
 import { useProjectStore } from '@/store/projectStore';
+import { useRequireAuth } from '@/hooks/useRequireAuth';
 import EditorLayout from '@/components/editor/EditorLayout';
 import type { Project } from '@/types';
 
@@ -12,6 +13,7 @@ export default function EditorPage() {
   const router = useRouter();
   const id = params?.id as string;
 
+  const { loading: authLoading } = useRequireAuth();
   const { currentProject, setCurrentProject, projects } = useAppStore();
   const projectStoreProjects = useProjectStore((s) => s.projects);
   const [loading, setLoading] = useState(true);
@@ -67,7 +69,7 @@ export default function EditorPage() {
     setLoading(false);
   }, [id, currentProject, projects, projectStoreProjects, setCurrentProject]);
 
-  if (loading) {
+  if (authLoading || loading) {
     return (
       <div className="flex items-center justify-center h-screen bg-[var(--color-bg)]">
         <div className="flex flex-col items-center gap-3">

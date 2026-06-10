@@ -3,6 +3,7 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { useProjectStore } from '@/store/projectStore'
+import { useRequireAuth } from '@/hooks/useRequireAuth'
 import { autoLayoutBook } from '@/lib/layout/autoLayout'
 import { defaultDocumentSettings, defaultTheme } from '@/lib/utils'
 import type { AnalysisResult } from '@/lib/ai/analyzer'
@@ -67,6 +68,7 @@ function ConfidenceBar({ value }: { value: number }) {
 
 export default function AnalysisPage() {
   const router = useRouter()
+  const { loading: authLoading } = useRequireAuth()
   const addProject = useProjectStore((s) => s.addProject)
 
   const [result, setResult] = useState<AnalysisResult | null>(null)
@@ -175,6 +177,8 @@ export default function AnalysisPage() {
   }
 
   // ─── Render ────────────────────────────────────────────────────────────────
+
+  if (authLoading) return null;
 
   if (!result) {
     return (

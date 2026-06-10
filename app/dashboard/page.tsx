@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   BookOpen,
@@ -28,14 +28,7 @@ import { useProjectStore } from '@/store/projectStore';
 import { bookTypeLabels, formatDate } from '@/lib/utils';
 import { cn } from '@/lib/utils';
 import type { BookType } from '@/types';
-
-// ─── Mock User ────────────────────────────────────────────────────────────────
-
-interface MockUser {
-  id: string;
-  name: string;
-  email: string;
-}
+import { useRequireAuth } from '@/hooks/useRequireAuth';
 
 // ─── Mock templates data ─────────────────────────────────────────────────────
 
@@ -103,30 +96,21 @@ const NAV_ITEMS = [
 
 export default function DashboardPage() {
   const router = useRouter();
+  const { user, loading: authLoading } = useRequireAuth();
   const { projects, deleteProject, duplicateProject, updateProject } = useProjectStore();
-  const [user, setUser] = useState<MockUser | null>(null);
   const [wizardOpen, setWizardOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [activeNav, setActiveNav] = useState(0);
   const [isDragOver, setIsDragOver] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    const stored = localStorage.getItem('pedabook_user');
-    if (stored) {
-      try {
-        setUser(JSON.parse(stored));
-      } catch {
-        router.replace('/login');
-      }
-    }
-  }, [router]);
-
   function handleLogout() {
     localStorage.removeItem('pedabook_user');
     localStorage.removeItem('pedabook_remember');
     router.push('/login');
   }
+
+  if (authLoading) return null;
 
   function handleRename(id: string, name: string) {
     updateProject(id, { name });
